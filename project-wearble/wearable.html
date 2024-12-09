@@ -1,0 +1,468 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Shirley Lee | Embedded Software Developer Smart Applications</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="icon" type="icon" href="images/favicon-line.ico"/>
+
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div><a href="../index.html" class="logo">
+							<span class="icon fa-gem"></span></a>
+
+						</div>
+						<div class="content">
+							<div class="inner">
+								<h1>Smart Lock with Voice Command Recognition</h1>
+								<p>Voice-Activated Smart Lock: EFR32xG24 SoC-powered, Cortex-M4-based solution using keyword recognition from trained data for enhanced home security</p>
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#overview">Overview</a></li>
+								<li><a href="#hardware">Hardware</a></li>
+								<li><a href="#software">Software</a></li>
+								<li><a href="#training">Training</a></li>
+								<li><a href="#application">Application</a></li>
+								<!--<li><a href="#elements">Elements</a></li>-->
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- One -->
+							<article id="overview">
+								<h2 class="major">Overview</h2>
+								<span class="image main"><img src="images/keyword-feature-2.png" alt="" /></span>
+								<p>
+									This project entails the development of a Smart Audio Recognition Model, executed on a Cortex-M4 microcontroller, designed to activate home devices via sound recognition. The model is integrated with the EFR32xG24 System-on-Chip (SoC) from Silicon Labs, which serves as the core processing unit for audio inputs and device control. The Smart Audio Recognition Model is trained to accurately detect and interpret voice commands, enabling users to interact with their smart home appliances through voice control. You can find the full project on my <a href="https://github.com/ShirleyLe3?tab=projects">github</a>.
+								</p>
+								<p>
+									The EFR32xG24 SoC serves as the core component for processing audio inputs and executing appropriate actions based on the recognized commands. The integrated Smart Audio Recognition Model, trained for high accuracy, ensures reliable detection and interpretation of voice commands. 
+								</p>
+								<span class="image main"><img src="images/keyword-feature-4.png" alt="" /></span>
+								<p>
+									The SensiML Analytics Toolkit is employed to capture and annotate audio data, while the TensorFlow package is used to create a model deployed and tested on the edge device.
+									A Smart Audio Recognition Model in conjunction with the EFR32xG24 System-on-Chip (SoC) enables sound-activated control of home devices. 
+								</p>
+								<span class="image main"><img src="images/audiolock-smartlock.jpg" alt="" /></span>
+								<p>
+									This cutting-edge technology provides a seamless, hands-free experience for users managing their home devices, elevating the functionality and overall user experience of smart home systems. This allows users to interact with their smart home appliances through voice commands, enhancing convenience and accessibility.
+								</p>
+								
+							</article>
+
+						<!-- Two -->
+							<article id="hardware">
+								<h2 class="major">Hardware</h2>
+								<span class="image main"><img src="images/keyword-hardware-board-2.png" alt="" /></span>
+								<p>This project uses the <a href="https://sensiml.com/documentation/firmware/silicon-labs-xg24/silicon-labs-xg24.html">EFR32xG24 Dev Kit Board</a> with the onboard IMU and I2S microphone sensor to take audio and motion measurements and send data via serial UART.</p>
+								<p>The xG24 Dev Kit is a compact and feature-rich development platform designed to support the EFR32xG24 wireless System-on-Chip (SoC) from Silicon Labs. This platform provides a quick and efficient way to develop and prototype wireless IoT products, with features including:
+									<ul>
+										<li>Support for +10dBm output power</li>
+										<li>Integration of a 20-bit Analog-to-Digital Converter (ADC)</li>
+										<li>Access to key features such as the xG24’s AI/ML hardware accelerator</li>
+										<li>Low-cost, small form factor design for easy prototyping</li>
+										<li>Support for various 2.4GHz wireless protocols, including BLE, Bluetooth mesh, Zigbee, Thread, and Matter</li>
+									</ul>											
+									</p>
+								<span class="image main"><img src="images/keyword-hardware-board-3description.png" alt="" /></span>	
+
+								<p>The kit includes a radio board that acts as a complete reference design for the EFR32xG24 wireless SoC. Additionally, the development platform offers an onboard J-Link debugger with a Packet Trace Interface and Virtual COM port, enabling streamlined application development and debugging of the attached radio board and external hardware. For more information take a look at the <a href="https://www.silabs.com/documents/public/user-guides/ug524-brd2601b-user-guide.pdf">datasheet</a> and <a href="https://www.silabs.com/documents/public/schematic-files/BRD2601B-A00-schematic.pdf">schematic</a></p>
+
+								<span class="image main"><img src="images/keyword-hardware-board-6SoC.png" alt="" /></span>
+								<span class="image main"><img src="images/keyword-hardware-board-7circuitdiagram-mic.png" alt="" /></span>
+
+								<p>With the xG24 Dev Kit, developers have access to a comprehensive set of tools needed to create scalable, high-volume 2.4GHz wireless IoT solutions, leveraging the capabilities of the EFR32xG24 SoC.</p>	
+							</article>
+
+						<!-- Three -->
+							<article id="software">
+								<h2 class="major">Software</h2>
+
+								<p>This IoT application involves capturing data from an I2S Microphone and an SPI IMU (Inertial Measurement Unit) connected to a device running a bare-metal configuration, and then transferring the captured data to a Python script over a virtual COM port (VCOM) at a baud rate of 921600. </p>
+								<figcaption>Microphone capture firmware - comms file: ensures reliable data transmission in the SSI v2 format, which is essential for communication between devices and systems</figcaption>
+								<span class="image main"><img src="images/keyword-software-Mic-comms.png" alt="" /></span>
+								<figcaption>Microphone capture firmware - handling voice transmission</figcaption>
+								<span class="image main"><img src="images/keyword-software-Mic-voice.png" alt="" /></span>	
+
+								<p>
+								The script then stores the data in two different file formats:
+									<ul>
+										<li><strong>WAV file for audio data:</strong> The captured audio data from the I2S Microphone is stored in a Waveform Audio File Format (WAV), which is a standard format for storing digital audio data. WAV files provide high-quality, uncompressed audio suitable for further processing, analysis, or playback.</li>
+										<li><strong>CSV file for IMU data:</strong> The captured IMU data, which includes measurements from sensors like accelerometers, gyroscopes, and magnetometers, is stored in a Comma-Separated Values (CSV) file. CSV files are a simple and commonly used format for storing tabular data, making it easy to analyze and process the sensor data in various applications, such as spreadsheet software or data analysis tools.</li>
+									</ul>
+								</p>
+							
+								<span class="image main"><img src="images/keyword-feature-vector.png" alt="" /></span>
+								<p>The example project utilizes the following key software components:
+									<ul>
+										<li><strong>I/O Stream Service:</strong> This service enables the transfer of data between the device and the Python script through the virtual COM port.</li>
+										<li><strong>Microphone and IMU Component Drivers:</strong> These drivers handle the communication and data retrieval from the I2S Microphone and SPI IMU, respectively.</li>
+									</ul>
+								</p>
+
+								<span class="image main"><img src="images/keyword-software-keywordspotting-audio.png" alt="" />This code is responsible for setting up and starting the audio capture and transmission process, potentially including optional features like audio filtering and recognition, depending on the specific configuration.</span>
+								<p>Overall, this IoT application demonstrates a simple yet effective way to capture and store sensor data for further analysis or processing, showcasing the capabilities of the hardware and software components involved.</p>
+							</article>
+
+							<!-- Four -->
+							<article id="training">
+								<h2 class="major">Training</h2>
+								<span class="image main"><img src="images/Keyword-spotting.png" alt="" /></span>
+								<p>
+									The training model portion of this project focuses on building a robust keyword spotting system using machine learning techniques. Our model is designed to identify specific keywords within 1-second audio segments, consisting of 16,000 samples at a 16 kHz rate. To ensure the best possible performance, we recommend using 20,000 samples per segment, with each 16,000 subsegment covering a significant part of the audio event. 
+								</p>
+								<p>The model creation process involves the following steps:
+									<ul>
+										<li><strong>Prepare Data:</strong> Define a query to extract relevant data from the annotated dataset for training purposes.</li>
+										<li><strong>Build Model:</strong> B Set up the model generator pipeline and optimize the keyword spotting model using the provided data. This step includes preprocessing the annotated data and employing it in training and cross-validation tasks.</li>
+										<li><strong>Explore Model:</strong>  Assess the model's performance using summary metrics and visualizations.</li>
+										<li><strong>Test Model:</strong>  Run the generated classifier on a separate, unused test dataset to evaluate its real-world performance. The test dataset should have the same characteristics as the training/validation data, such as ambient noise levels and diversity of subjects.</li>
+									</ul>
+								</p>
+								<p>To customize the training process for your dataset, consider tweaking the following parameters:
+									<ul>
+										<li><strong>Dense Layers:</strong> Add additional dense layers to improve model performance, particularly for large projects with numerous keywords or similar-sounding words.</li>
+										<li><strong>Training/Validation Size Limit:</strong>  Control the maximum number of randomly selected samples per label in each training epoch to prevent excessively long training times for large datasets.</li>
+										<li><strong>Batch Normalization:</strong>  Employ this technique to increase network stability, reduce overfitting risk, and enable faster training.</li>
+										<li><strong>Dropout:</strong>  Implement this regularization technique to randomly drop a fraction of layer outputs during training, promoting model robustness and reducing overfitting.</li>
+										<li><strong>Data Augmentation Techniques:</strong>  Enhance the feature vector by altering its dimensions or incorporating feature vectors from similar projects. This can improve the model's ability to generalize and adapt to unseen data.</li>
+									</ul>
+								</p>
+								<p>
+									By carefully configuring these parameters and following the provided guidelines, you can create a high-performing keyword spotting model tailored to your specific application.
+								</p>
+							</article>
+
+						<!-- Five -->
+						<article id="application">
+							<h2 class="major">Application</h2>
+							<span class="image main"><img src="images/keyword-application-2.png" alt="" /></span>
+							<p>
+								The development of the Voice-Activated Smart Lock system showcases the potential of integrating cutting-edge technologies like machine learning and advanced microcontrollers to create innovative and secure home automation solutions. 
+							</p>
+							<p>
+								By leveraging the capabilities of the EFR32xG24 SoC and Cortex-M4 microcontroller, this project successfully demonstrates the ability to train and deploy models that enable voice command recognition on edge devices. The outcome is an intelligent, user-friendly, and secure access control system that paves the way for further advancements in smart home security. 
+							</p>
+							<span class="image main"><img src="images/Keyword-other-applications.png" alt="" /></span>							
+							<p>
+								This versatile sensor device, designed to be installed near a door's deadbolt, ensuring enhanced security. Moreover, the board serves as a valuable tool for developing a range of audio classification algorithms, including key unlocking, industrial sound recognition, and sound-activated smart home devices, highlighting its adaptability and potential for diverse applications.</p>
+							
+							<span class="image main"><img src="images/keyword-application-00hom.png" alt="" /></span>		
+							<p>
+								Overall, this project serves as a testament to the power and versatility of modern embedded systems and their capacity to enhance our daily lives.
+							</p>
+						</article>							
+
+
+							<!-- <article id="contact">
+								<h2 class="major">Contact</h2>
+								<form method="post" action="#">
+									<div class="fields">
+										<div class="field half">
+											<label for="name">Name</label>
+											<input type="text" name="name" id="name" />
+										</div>
+										<div class="field half">
+											<label for="email">Email</label>
+											<input type="text" name="email" id="email" />
+										</div>
+										<div class="field">
+											<label for="message">Message</label>
+											<textarea name="message" id="message" rows="4"></textarea>
+										</div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send Message" class="primary" /></li>
+										<li><input type="reset" value="Reset" /></li>
+									</ul>
+								</form>
+								<ul class="icons">
+									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</article> -->
+
+						<!-- Elements -->
+							<article id="elements">
+								<h2 class="major">Elements</h2>
+
+								<section>
+									<h3 class="major">Text</h3>
+									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
+									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
+									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
+									<hr />
+									<h2>Heading Level 2</h2>
+									<h3>Heading Level 3</h3>
+									<h4>Heading Level 4</h4>
+									<h5>Heading Level 5</h5>
+									<h6>Heading Level 6</h6>
+									<hr />
+									<h4>Blockquote</h4>
+									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
+									<h4>Preformatted</h4>
+									<pre><code>i = 0;
+
+while (!deck.isInOrder()) {
+    print 'Iteration ' + i;
+    deck.shuffle();
+    i++;
+}
+
+print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
+								</section>
+
+								<section>
+									<h3 class="major">Lists</h3>
+
+									<h4>Unordered</h4>
+									<ul>
+										<li>Dolor pulvinar etiam.</li>
+										<li>Sagittis adipiscing.</li>
+										<li>Felis enim feugiat.</li>
+									</ul>
+
+									<h4>Alternate</h4>
+									<ul class="alt">
+										<li>Dolor pulvinar etiam.</li>
+										<li>Sagittis adipiscing.</li>
+										<li>Felis enim feugiat.</li>
+									</ul>
+
+									<h4>Ordered</h4>
+									<ol>
+										<li>Dolor pulvinar etiam.</li>
+										<li>Etiam vel felis viverra.</li>
+										<li>Felis enim feugiat.</li>
+										<li>Dolor pulvinar etiam.</li>
+										<li>Etiam vel felis lorem.</li>
+										<li>Felis enim et feugiat.</li>
+									</ol>
+									<h4>Icons</h4>
+									<ul class="icons">
+										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+										<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+
+									<h4>Actions</h4>
+									<ul class="actions">
+										<li><a href="#" class="button primary">Default</a></li>
+										<li><a href="#" class="button">Default</a></li>
+									</ul>
+									<ul class="actions stacked">
+										<li><a href="#" class="button primary">Default</a></li>
+										<li><a href="#" class="button">Default</a></li>
+									</ul>
+								</section>
+
+								<section>
+									<h3 class="major">Table</h3>
+									<h4>Default</h4>
+									<div class="table-wrapper">
+										<table>
+											<thead>
+												<tr>
+													<th>Name</th>
+													<th>Description</th>
+													<th>Price</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Item One</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Two</td>
+													<td>Vis ac commodo adipiscing arcu aliquet.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Three</td>
+													<td> Morbi faucibus arcu accumsan lorem.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Four</td>
+													<td>Vitae integer tempus condimentum.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Five</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="2"></td>
+													<td>100.00</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+
+									<h4>Alternate</h4>
+									<div class="table-wrapper">
+										<table class="alt">
+											<thead>
+												<tr>
+													<th>Name</th>
+													<th>Description</th>
+													<th>Price</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Item One</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Two</td>
+													<td>Vis ac commodo adipiscing arcu aliquet.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Three</td>
+													<td> Morbi faucibus arcu accumsan lorem.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Four</td>
+													<td>Vitae integer tempus condimentum.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Five</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="2"></td>
+													<td>100.00</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</section>
+
+								<section>
+									<h3 class="major">Buttons</h3>
+									<ul class="actions">
+										<li><a href="#" class="button primary">Primary</a></li>
+										<li><a href="#" class="button">Default</a></li>
+									</ul>
+									<ul class="actions">
+										<li><a href="#" class="button">Default</a></li>
+										<li><a href="#" class="button small">Small</a></li>
+									</ul>
+									<ul class="actions">
+										<li><a href="#" class="button primary icon solid fa-download">Icon</a></li>
+										<li><a href="#" class="button icon solid fa-download">Icon</a></li>
+									</ul>
+									<ul class="actions">
+										<li><span class="button primary disabled">Disabled</span></li>
+										<li><span class="button disabled">Disabled</span></li>
+									</ul>
+								</section>
+
+								<section>
+									<h3 class="major">Form</h3>
+									<form method="post" action="#">
+										<div class="fields">
+											<div class="field half">
+												<label for="demo-name">Name</label>
+												<input type="text" name="demo-name" id="demo-name" value="" placeholder="Jane Doe" />
+											</div>
+											<div class="field half">
+												<label for="demo-email">Email</label>
+												<input type="email" name="demo-email" id="demo-email" value="" placeholder="jane@untitled.tld" />
+											</div>
+											<div class="field">
+												<label for="demo-category">Category</label>
+												<select name="demo-category" id="demo-category">
+													<option value="">-</option>
+													<option value="1">Manufacturing</option>
+													<option value="1">Shipping</option>
+													<option value="1">Administration</option>
+													<option value="1">Human Resources</option>
+												</select>
+											</div>
+											<div class="field half">
+												<input type="radio" id="demo-priority-low" name="demo-priority" checked>
+												<label for="demo-priority-low">Low</label>
+											</div>
+											<div class="field half">
+												<input type="radio" id="demo-priority-high" name="demo-priority">
+												<label for="demo-priority-high">High</label>
+											</div>
+											<div class="field half">
+												<input type="checkbox" id="demo-copy" name="demo-copy">
+												<label for="demo-copy">Email me a copy</label>
+											</div>
+											<div class="field half">
+												<input type="checkbox" id="demo-human" name="demo-human" checked>
+												<label for="demo-human">Not a robot</label>
+											</div>
+											<div class="field">
+												<label for="demo-message">Message</label>
+												<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
+											</div>
+										</div>
+										<ul class="actions">
+											<li><input type="submit" value="Send Message" class="primary" /></li>
+											<li><input type="reset" value="Reset" /></li>
+										</ul>
+									</form>
+								</section>
+
+							</article>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						&copy; <a href="../index.html">Shirley Software Solutions. </a>
+						<a href="https://calendly.com/shirley-lee10100/30min" class="icon brands fa-instagram"><span class="label">Schedule</span></a>
+						<a href="https://www.linkedin.com/in/shirley--lee" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a>
+						<a href="https://github.com/ShirleyLe3/About-Me" class="icon brands fa-github"><span class="label">GitHub</span></a>
+						<a href="mailto:shirley.lee10100@gmail.com" class="icon solid alt fa-envelope"><span class="label">Email</span></a>
+						
+					</footer>
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
